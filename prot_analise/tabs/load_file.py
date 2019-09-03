@@ -10,15 +10,16 @@ class LoadFile(QWidget):
         super().__init__()
 
         self.path = ""
+        self.path_database = ""
         self.fasta = fasta
-        self.proteins = {}
+        self.proteins = dict
         name = QLabel("File Source: ")
         self.nameEdit = QTextEdit(self)
         self.nameEdit.setMaximumHeight(30)
         self.nameEdit.setText("../examples/clustry_H.csv")
 
         selctGroup = QGroupBox("")
-        selctGroup2 = QGroupBox("")
+        self.selctGroup2 = QGroupBox("")
         mainLayout = QVBoxLayout()
 
         layout = QHBoxLayout()
@@ -35,22 +36,23 @@ class LoadFile(QWidget):
         button3 = QtWidgets.QPushButton("Download data from UniprotKB")
         button3.clicked.connect(self.get_group_taxonomy)
 
-        checkGroup3 = QGroupBox("Get information about proteins from file (not implemented yet):")
+        self.checkGroup3 = QGroupBox("Get information about proteins from file:")
 
         layout3 = QHBoxLayout()
         name = QLabel("XML file source of protein: ")
         self.nameEdit2 = QTextEdit(self)
         self.nameEdit2.setMaximumHeight(30)
         button4 = QtWidgets.QPushButton("Get File")
-        button4.clicked.connect(self.get_path)
+        button4.clicked.connect(self.get_path_database)
         button5 = QtWidgets.QPushButton("Load File")
-        button5.clicked.connect(self.source_datas)
+        button5.clicked.connect(self.source_data_UniprotKB)
 
         layout3.addWidget(name)
         layout3.addWidget(self.nameEdit2)
         layout3.addWidget(button4)
         layout3.addWidget(button5)
-        checkGroup3.setLayout(layout3)
+        self.checkGroup3.setLayout(layout3)
+        self.checkGroup3.hide()
 
         layout2.addWidget(button3)
 
@@ -59,11 +61,12 @@ class LoadFile(QWidget):
         layout2.addWidget(self.ended)
 
         selctGroup.setLayout(layout)
-        selctGroup2.setLayout(layout2)
+        self.selctGroup2.setLayout(layout2)
+        self.selctGroup2.hide()
 
         mainLayout.addWidget(selctGroup)
-        mainLayout.addWidget(checkGroup3)
-        mainLayout.addWidget(selctGroup2)
+        mainLayout.addWidget(self.checkGroup3)
+        mainLayout.addWidget(self.selctGroup2)
 
         self.setLayout(mainLayout)
 
@@ -72,6 +75,13 @@ class LoadFile(QWidget):
         filename = QFileDialog.getOpenFileName(self, "Open File", "./")
         if filename[0]:
             self.nameEdit.setText(filename[0])
+        self.update()
+
+    def get_path_database(self):
+        self.update_tab()
+        filename = QFileDialog.getOpenFileName(self, "Open File", "./")
+        if filename[0]:
+            self.nameEdit2.setText(filename[0])
         self.update()
 
     def update_tab(self):
@@ -91,6 +101,17 @@ class LoadFile(QWidget):
         self.path = self.nameEdit.toPlainText()
         if self.path:
             self.fasta.get_path(self.path)
+            self.update_tab()
+            if len(self.proteins.items()) > 0:
+                self.selctGroup2.show()
+                self.checkGroup3.show()
+
+    def source_data_UniprotKB(self):
+        self.path_database = self.nameEdit2.toPlainText()
+        if self.path_database:
+            # print("wywołane")
+            self.fasta.get_data_database(self.path_database)
+            self.ended.setText("Found lengths and taxonomies. No information about missing.")
 
     def get_group_taxonomy(self):
         missing = self.fasta.get_group_taxonomy()

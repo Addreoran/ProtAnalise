@@ -1,7 +1,7 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QVBoxLayout, QLabel, QWidget, QTextEdit, QComboBox, QHBoxLayout, QGroupBox
 
-from prot_analise.scripts.Region import Region
+from prot_analise.scripts.region import Region
 
 
 class LoadFasta(QWidget):

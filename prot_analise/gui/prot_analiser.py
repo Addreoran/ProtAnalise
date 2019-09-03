@@ -3,9 +3,9 @@ import sys
 
 from PyQt5.QtWidgets import QApplication, QDialog, QTabWidget, QVBoxLayout
 
-from prot_analise.scripts.MenageData import AllData
-from prot_analise.tabs.LoadFasta import LoadFasta
-from prot_analise.tabs.LoadFile import LoadFile
+from prot_analise.scripts.menage_data import AllData
+from prot_analise.tabs.load_fasta import LoadFasta
+from prot_analise.tabs.load_file import LoadFile
 
 
 class Window(QDialog):

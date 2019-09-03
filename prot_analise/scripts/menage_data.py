@@ -1,11 +1,11 @@
 import requests
 from multiprocess.pool import Pool
 
-from prot_analise.scripts.ParseXML import ParseXML
-from prot_analise.scripts.Region import Region
+from prot_analise.scripts.parse_XML import ParseXML
+from prot_analise.scripts.region import Region
 
 
-class AllData():
+class AllData:
     def __init__(self):
         self.proteins = {}
         self.species = {}
@@ -57,6 +57,16 @@ class AllData():
                     self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
         self.loaded_protein = ""
 
+
+    def get_data_database(self, path):
+        parser = ParseXML(path, True)
+        parser.parse_onefile_XMLs(self.proteins.keys())
+        self.lenths = parser.get_lenths()
+        self.kingdom = parser.kingdoms
+        self.species = parser.species
+        self.lenths = parser.lenths
+        print("get data", self.species)
+
     def get_group_taxonomy(self):
         missing = []
         p = Pool(8)
@@ -77,6 +87,7 @@ class AllData():
                 if not self.set_prot_info(result):
                     missing.append(i)
         self.logs['uniprot_error'] = missing
+        print(self.lenths)
         return missing
 
     def set_prot_info(self, res):
