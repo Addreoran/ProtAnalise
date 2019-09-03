@@ -15,12 +15,9 @@ class LoadFasta(QWidget):
         self.species = {}
         name = QLabel("File: ")
         self.file = QTextEdit(self)
-        # self.File.setMaximumHeight(30)
         self.combo = QComboBox()
         self.combo.currentTextChanged.connect(self.get_regions)
-
         self.combo_group = QComboBox()
-
         self.list = self.get_proteins()
         layout = QVBoxLayout()
         self.layout_combo = QHBoxLayout()
@@ -32,60 +29,19 @@ class LoadFasta(QWidget):
         layout.addWidget(name)
         layout.addWidget(self.file)
         self.loaded_protein = ""
-
-        # button1 = QtWidgets.QPushButton("Get regions")
-        # button1.clicked.connect(self.get_regions)
-        #
         button2 = QtWidgets.QPushButton("Update protein")
         button2.clicked.connect(self.update_protein)
-        # button3 = QtWidgets.QPushButton("Update")
-        # button3.clicked.connect(self.update_proteins)
-        # layout.addWidget(button2)
-        # layout.addWidget(button3)
         layout.addWidget(button2)
-        # layout.addWidget(button2)
         self.group = "UniprotId"
         self.combo_group.addItems(["", "UniprotId", "Species", "Groups of Taxonomy (Cellular)"])
-        self.combo_group.currentIndexChanged.connect(self.select_go)
         self.combo_group.currentTextChanged.connect(self.update_proteins)
         self.combo_group_go = ""
-
         self.go_by_anch = {}
         self.setLayout(layout)
-
-    def on_combobox_changed(self, value):
-        print("combobox changed", value)
 
     def set_lenths(self, lenths):
         self.lenths = lenths
         self.update()
-
-    def select_go(self, i):
-        # print("Items in the list are :")
-        #
-        # for count in range(self.combo_group.count()):
-        #     print(self.combo_group.itemText(count))
-        # print("Current index", i, "selection changed ", self.combo_group.currentText())
-        items = self.layout_combo.count()
-        if self.combo_group.currentText() == "GO" or self.combo_group.currentText() == "GO by tags":
-            if items < 3:
-                self.combo_group_go = QComboBox()
-                goo_groups = []
-                for i in self.fasta.go.keys():
-                    tmp = []
-                    for k in self.fasta.go[i].values():
-                        print(i, self.fasta.go[i].values())
-                        tmp += k
-                        print(tmp)
-                    goo_groups.append(i + ", proteins: " + str(len(set(tmp))))
-                    print("goo", goo_groups)
-                self.combo_group_go.addItems(["all, proteins: " + str(len(self.proteins.keys()))] + goo_groups)
-                self.layout_combo.addWidget(self.combo_group_go)
-        elif items == 3:
-            self.layout_combo.removeWidget(self.combo_group_go)
-            self.combo_group_go.deleteLater()
-            self.combo_group_go = None
-        print(self.combo_group.currentText())
 
     def source_datas(self):
         self.path = self.nameEdit.toPlainText()
@@ -109,11 +65,8 @@ class LoadFasta(QWidget):
                     print("1", uniprotid)
                     begin = i.split("=")[3].split(";")[0]
                     end = i.split("=")[4].split(";")[0]
-
-
                 elif seq == 1 and i.startswith(">s"):
                     seq = 1
-                    print("3", uniprotid)
                     if uniprotid not in self.proteins.keys():
                         self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
                     else:
@@ -123,11 +76,9 @@ class LoadFasta(QWidget):
                     uniprotid = i.split("=")[2].split(";")[0]
                     begin = i.split("=")[3].split(";")[0]
                     end = i.split("=")[4].split(";")[0]
-
-                #                 >s;id=16;uniprot_id=P32242;beg=291;end=300;family=paired homeobox family Bicoid subfami
                 elif seq == 1 and not i.startswith(">"):
-                    print("2", uniprotid)
                     seq_reg += i.strip()
+
         if uniprotid:
             if uniprotid not in self.proteins.keys():
                 self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
@@ -178,7 +129,6 @@ class LoadFasta(QWidget):
 
             self.file.setText(text)
         elif self.combo_group.currentText() == "Species":
-            print(self.species)
             if not self.proteins:
                 self.get_update()
             self.loaded_protein = str(self.combo.currentText()).split(",")[0]
@@ -191,7 +141,6 @@ class LoadFasta(QWidget):
                         text += "end = " + str(region.get_end()) + " \n"
                         text += str(region.sequence) + "\n"
         elif self.combo_group.currentText() == "Groups of Taxonomy (Cellular)":
-            print(self.kingdom)
             if not self.proteins:
                 self.get_update()
             self.loaded_protein = str(self.combo.currentText()).split(",")[0]
@@ -203,45 +152,6 @@ class LoadFasta(QWidget):
                         text += "begin = " + str(region.get_begin()) + " "
                         text += "end = " + str(region.get_end()) + " \n"
                         text += str(region.sequence) + "\n"
-        elif self.combo_group.currentText() == "GO":
-            group = self.combo_group.currentText()
-            print(group)
-            print(self.kingdom)
-            if not self.proteins:
-                self.get_update()
-            self.loaded_protein = str(self.combo.currentText()).split(",")[0]
-            text = ""
-            if self.loaded_protein != "all" and self.loaded_protein != "" and self.go_grooup != "":
-                for protein in self.fasta.go[self.go_grooup][self.loaded_protein]:
-                    for region in self.proteins[protein]:
-                        text += ">protein = " + protein + " "
-                        text += "begin = " + str(region.get_begin()) + " "
-                        text += "end = " + str(region.get_end()) + " \n"
-                        text += str(region.sequence) + "\n"
-        elif self.combo_group.currentText() == "GO by tags":
-            group = self.combo_group.currentText()
-            print(group)
-            print(self.kingdom)
-            if not self.proteins:
-                self.get_update()
-            self.loaded_protein = str(self.combo.currentText()).split(",")[0]
-            text = ""
-            if self.loaded_protein != "all" and self.loaded_protein != "" and self.go_grooup != "":
-                print("blad", self.go_grooup, self.loaded_protein, self.go_by_anch)
-                for protein in self.go_by_anch[self.go_grooup][self.loaded_protein]:
-                    for region in self.proteins[protein]:
-                        text += ">protein = " + protein + " "
-                        text += "begin = " + str(region.get_begin()) + " "
-                        text += "end = " + str(region.get_end()) + " \n"
-                        text += str(region.sequence) + "\n"
-        if self.loaded_protein == "all":
-            for protein in self.proteins.keys():
-                for region in self.proteins[protein]:
-                    text += ">protein = " + protein + " "
-                    text += "begin = " + str(region.get_begin()) + " "
-                    text += "end = " + str(region.get_end()) + " \n"
-
-                    text += str(region.sequence) + "\n"
         self.file.setText(text)
         self.update()
 

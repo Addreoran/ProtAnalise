@@ -16,7 +16,6 @@ class ParseXML:
         self.specieses = {}
 
     def parse_onefile_XMLs(self):
-        # print(soup)
         entries = self.soup.find_all("entry")
         for i in entries:
             self.parse_XML(i)

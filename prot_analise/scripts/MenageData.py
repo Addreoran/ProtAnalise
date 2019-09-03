@@ -33,10 +33,8 @@ class AllData():
         for i in f.readlines():
             if i != "":
                 if i.startswith(">s"):
-                    # seq = 1
                     if uniprotid:
                         if uniprotid not in self.proteins.keys():
-
                             self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
                         else:
                             if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
@@ -49,29 +47,21 @@ class AllData():
                     print("seq ", seq_reg)
                     print("begin ", begin)
                     print("end ", end)
-
-
-                #                 >s;id=16;uniprot_id=P32242;beg=291;end=300;family=paired homeobox family Bicoid subfami
                 elif uniprotid and not i.startswith(">"):
                     seq_reg += i.strip()
-
         if uniprotid:
             if uniprotid not in self.proteins.keys():
                 self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
             else:
                 if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
                     self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
-
         self.loaded_protein = ""
 
     def get_group_taxonomy(self):
-        print(len(self.proteins.keys()))
         missing = []
         p = Pool(8)
         res = p.map(parse_uniprot, list(self.proteins.keys()))
-
         for date in res:
-            print(date)
             if not self.set_prot_info(date):
                 missing.append(date[4])
         tmp = missing
