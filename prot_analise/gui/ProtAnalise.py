@@ -1,15 +1,17 @@
 import multiprocessing
 import sys
+
 from PyQt5.QtWidgets import QApplication, QDialog, QTabWidget, QVBoxLayout
-from scripts.MenageData import AllData
-from tabs.LoadFasta import LoadFasta
-from tabs.LoadFile import LoadFile
+
+from prot_analise.scripts.MenageData import AllData
+from prot_analise.tabs.LoadFasta import LoadFasta
+from prot_analise.tabs.LoadFile import LoadFile
 
 
 class Window(QDialog):
     def __init__(self):
         super().__init__()
-        self.title = "Protein Analiser"
+        self.title = "Protein Analyser"
         self.top = 100
         self.left = 100
         self.width = 600

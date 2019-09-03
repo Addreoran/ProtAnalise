@@ -1,9 +1,7 @@
-import numpy as np
-import requests
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QVBoxLayout, QLabel, QWidget, QTextEdit, QComboBox, QHBoxLayout, QGroupBox, QFileDialog
+from PyQt5.QtWidgets import QVBoxLayout, QLabel, QWidget, QTextEdit, QComboBox, QHBoxLayout, QGroupBox
 
-from scripts.Region import Region
+from prot_analise.scripts.Region import Region
 
 
 class LoadFasta(QWidget):
@@ -38,7 +36,7 @@ class LoadFasta(QWidget):
         # button1 = QtWidgets.QPushButton("Get regions")
         # button1.clicked.connect(self.get_regions)
         #
-        button2 = QtWidgets.QPushButton("Update Protein")
+        button2 = QtWidgets.QPushButton("Update protein")
         button2.clicked.connect(self.update_protein)
         # button3 = QtWidgets.QPushButton("Update")
         # button3.clicked.connect(self.update_proteins)
@@ -57,6 +55,7 @@ class LoadFasta(QWidget):
 
     def on_combobox_changed(self, value):
         print("combobox changed", value)
+
     def set_lenths(self, lenths):
         self.lenths = lenths
         self.update()
@@ -164,7 +163,6 @@ class LoadFasta(QWidget):
         self.update()
 
     def get_regions(self):
-        # todo: naprawienie zmiana self.combo_group i brak zmiany self.combo -> przerwanie działania
         self.update_tab()
         text = ""
         self.file.setText(text)

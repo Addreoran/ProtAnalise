@@ -13,5 +13,6 @@ class Region:
 
     def get_end(self):
         return self.end
+
     def get_sequence(self):
         return self.sequence

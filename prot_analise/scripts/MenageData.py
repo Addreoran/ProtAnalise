@@ -1,8 +1,8 @@
 import requests
 from multiprocess.pool import Pool
 
-from scripts.ParseXML import ParseXML
-from scripts.Region import Region
+from prot_analise.scripts.ParseXML import ParseXML
+from prot_analise.scripts.Region import Region
 
 
 class AllData():
@@ -23,9 +23,9 @@ class AllData():
 
     def get_path(self, path):
         self.proteins = {}
-        self.path=path
+        self.path = path
         f = open(path, 'r')
-        uniprotid=None
+        uniprotid = None
         seq_reg = ""
         begin = 0
         end = 0
@@ -54,7 +54,6 @@ class AllData():
                 #                 >s;id=16;uniprot_id=P32242;beg=291;end=300;family=paired homeobox family Bicoid subfami
                 elif uniprotid and not i.startswith(">"):
                     seq_reg += i.strip()
-
 
         if uniprotid:
             if uniprotid not in self.proteins.keys():
@@ -90,7 +89,6 @@ class AllData():
         self.logs['uniprot_error'] = missing
         return missing
 
-
     def set_prot_info(self, res):
         if res[0] != []:
             length = res[0]
@@ -111,23 +109,6 @@ class AllData():
             return False
 
 
-
-
-
-    # def load_datas(self):
-    #     self.get_path(self.path)
-
-    def search_cellularity(self):
-        pass
-
-    def search_secretion(self):
-        pass
-
-    def search_place_activity(self):
-        pass
-
-
-
 def parse_uniprot(protein):
     try:
         link = 'https://www.uniprot.org/uniprot/' + str(protein) + ".xml"
@@ -139,4 +120,3 @@ def parse_uniprot(protein):
         return lenth, taxonomy, protein_xml, species, protein
     except:
         return [], [], [], [], protein
-

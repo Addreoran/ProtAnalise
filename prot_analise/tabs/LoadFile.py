@@ -19,7 +19,6 @@ class LoadFile(QWidget):
 
         selctGroup = QGroupBox("")
         selctGroup2 = QGroupBox("")
-
         mainLayout = QVBoxLayout()
 
         layout = QHBoxLayout()
@@ -33,7 +32,7 @@ class LoadFile(QWidget):
         layout.addWidget(button1)
 
         layout2 = QHBoxLayout()
-        button3 = QtWidgets.QPushButton("Download datas from uniprot")
+        button3 = QtWidgets.QPushButton("Download data from UniprotKB")
         button3.clicked.connect(self.get_group_taxonomy)
 
         checkGroup3 = QGroupBox("Get information about proteins from file (not implemented yet):")
@@ -55,7 +54,7 @@ class LoadFile(QWidget):
 
         layout2.addWidget(button3)
 
-        self.ended = QLabel("No lenghts and taxonomic")
+        self.ended = QLabel("No lengths and taxonomic.")
 
         layout2.addWidget(self.ended)
 
@@ -89,17 +88,14 @@ class LoadFile(QWidget):
         self.update()
 
     def source_datas(self):
-        # todo: tu jest coś dziwnego
         self.path = self.nameEdit.toPlainText()
         if self.path:
-            # todo: dodać okienko lub napis - brak takiego pliku
-            # todo: dodać sprawdzanie czy wlaściwy format plików
             self.fasta.get_path(self.path)
 
     def get_group_taxonomy(self):
         missing = self.fasta.get_group_taxonomy()
         if len(missing) == 0:
-            self.ended.setText("Finded lenths and taxonomies")
+            self.ended.setText("Found lengths and taxonomies.")
         else:
-            self.ended.setText("Finded lenths and taxonomies, missed " + str(len(missing)) + " proteins")
+            self.ended.setText("Found lenths and taxonomies, missed " + str(len(missing)) + " proteins.")
             print(missing)
