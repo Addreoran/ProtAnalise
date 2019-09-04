@@ -21,21 +21,18 @@ class AllData:
     def get_path(self, path):
         self.clear()
         self.path = path
-        f = open(path, 'r')
+        file = open(path)
         uniprot_id = None
         seq_reg = ""
         begin = 0
         end = 0
 
-        for line in f.readlines():
+        for line in file:
             if line != "":
                 if line.startswith(">s"):
                     if uniprot_id:
-                        if uniprot_id not in self.proteins.keys():
-                            self.proteins[uniprot_id] = [Region(uniprot_id, seq_reg, begin, end)]
-                        else:
-                            if not self.get_region_by_seq(self.proteins[uniprot_id], seq_reg, begin, end):
-                                self.proteins[uniprot_id].append(Region(uniprot_id, seq_reg, begin, end))
+                        region = Region(uniprot_id, seq_reg, begin, end)
+                        self.add_region(region)
                     uniprot_id = line.split(";")[2].split("=")[1]
                     begin = line.split(";")[3].split("=")[1]
                     end = line.split(";")[4].split("=")[1]
@@ -44,17 +41,21 @@ class AllData:
                 elif uniprot_id and not line.startswith(">"):
                     seq_reg += line.strip()
         if uniprot_id:
-            if uniprot_id not in self.proteins.keys():
-                self.proteins[uniprot_id] = [Region(uniprot_id, seq_reg, begin, end)]
-            else:
-                if not self.get_region_by_seq(self.proteins[uniprot_id], seq_reg, begin, end):
-                    self.proteins[uniprot_id].append(Region(uniprot_id, seq_reg, begin, end))
+            region = Region(uniprot_id, seq_reg, begin, end)
+            self.add_region(region)
+        file.close()
         self.loaded_protein = ""
 
-    def get_region_by_seq(self, list_prot, seq, begin, end):
-        for sequence in list_prot:
-            if sequence.sequence == seq and sequence.begin == begin and sequence.end == end:
-                return sequence
+    def add_region(self, region):
+        if region.uniprot_id not in self.proteins.keys():
+            self.proteins[region.uniprot_id] = []
+        if not self.get_region_by_seq(region):
+            self.proteins[region.uniprot_id].append(region)
+
+    def get_region_by_seq(self, new_region):
+        for region in self.proteins[new_region.uniprot_id]:
+            if region == new_region:
+                return region
 
     def get_data_database(self, path):
         # todo: improve implementation

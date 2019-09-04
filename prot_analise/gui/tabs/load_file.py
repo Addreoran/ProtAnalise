@@ -13,7 +13,7 @@ class LoadFile(QWidget):
         name = QLabel("File Source: ")
         self.nameEdit = QTextEdit(self)
         self.nameEdit.setMaximumHeight(30)
-        self.nameEdit.setText("../examples/clustry_H.csv")
+        self.nameEdit.setText("../examples/clustry_H.fasta")
 
         selctGroup = QGroupBox("")
         mainLayout = QVBoxLayout()

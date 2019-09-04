@@ -5,3 +5,11 @@ class Region:
         self.begin = begin
         self.end = end
         self.header = header
+
+    def __eq__(self, other):
+        return all([
+            self.uniprot_id == other.uniprot_id,
+            self.sequence == other.sequence,
+            self.begin == other.begin,
+            self.end == other.end,
+        ])
