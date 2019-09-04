@@ -24,7 +24,7 @@ class LoadFile(QWidget):
         button1 = QtWidgets.QPushButton("Load File")
         button1.clicked.connect(self.source_datas)
         button2 = QtWidgets.QPushButton("Choose File")
-        button2.clicked.connect(self.get_path)
+        button2.clicked.connect(self.load_path)
         layout.addWidget(button2)
         layout.addWidget(button1)
 
@@ -66,7 +66,7 @@ class LoadFile(QWidget):
 
         self.setLayout(mainLayout)
 
-    def get_path(self):
+    def load_path(self):
         self.update_tab()
         filename = QFileDialog.getOpenFileName(self, "Open File", "./")
         if filename[0]:

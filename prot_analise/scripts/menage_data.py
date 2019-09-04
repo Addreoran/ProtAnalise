@@ -21,39 +21,35 @@ class AllData:
     def get_path(self, path):
         self.clear()
         self.path = path
-        uniprotid, seq_reg, begin, end = self.read_file(path)
-        if seq_reg:
-            if uniprotid not in self.proteins.keys():
-                self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
-            else:
-                if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
-                    self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
-        self.loaded_protein = ""
-
-    def read_file(self, path):
         f = open(path, 'r')
         uniprotid = None
         seq_reg = ""
         begin = 0
         end = 0
 
-        for line in f.readlines():
-            if line != "":
-                if line.startswith(">s"):
+        for i in f.readlines():
+            if i != "":
+                if i.startswith(">s"):
                     if uniprotid:
                         if uniprotid not in self.proteins.keys():
                             self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
                         else:
                             if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
                                 self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
-                    uniprotid = line.split(";")[2].split("=")[1]
+                    uniprotid = i.split(";")[2].split("=")[1]
                     seq_reg = ""
-                    begin = line.split(";")[3].split("=")[1]
-                    end = line.split(";")[4].split("=")[1]
+                    begin = i.split(";")[3].split("=")[1]
+                    end = i.split(";")[4].split("=")[1]
                     print(uniprotid, seq_reg, begin, end, sep=", ")
-                elif uniprotid and not line.startswith(">"):
-                    seq_reg += line.strip()
-        return uniprotid, seq_reg, begin, end
+                elif uniprotid and not i.startswith(">"):
+                    seq_reg += i.strip()
+        if uniprotid:
+            if uniprotid not in self.proteins.keys():
+                self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
+            else:
+                if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
+                    self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
+        self.loaded_protein = ""
 
     def get_region_by_seq(self, list_prot, seq, begin, end):
         for sequence in list_prot:
