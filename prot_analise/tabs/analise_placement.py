@@ -131,7 +131,11 @@ class AnalisePlacement(QWidget):
 
 class PlotCanvas(FigureCanvas):
 
-    def __init__(self, names=[], popularity=[], parent=None, width=5, height=4, dpi=100):
+    def __init__(self, names=None, popularity=None, width=5, height=4, dpi=100):
+        if popularity is None:
+            popularity = []
+        if names is None:
+            names = []
         fig = Figure(figsize=(width, height), dpi=dpi)
         self.names = names
         self.popularity = popularity

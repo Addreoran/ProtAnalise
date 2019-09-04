@@ -4,9 +4,9 @@ import sys
 from PyQt5.QtWidgets import QApplication, QDialog, QTabWidget, QVBoxLayout
 
 from prot_analise.scripts.menage_data import AllData
+from prot_analise.tabs.analise_placement import AnalisePlacement
 from prot_analise.tabs.load_fasta import LoadFasta
 from prot_analise.tabs.load_file import LoadFile
-from prot_analise.tabs.analise_placement import AnalisePlacement
 
 
 class Window(QDialog):
