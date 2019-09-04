@@ -20,20 +20,21 @@ class ParseXML:
 
     def parse_onefile_XMLs(self, uniprot_ids):
         text = ""
+        print(uniprot_ids)
+        import gc
+        gc.set_debug(gc.DEBUG_SAVEALL)
         with open(self.soup) as f:
-            line="pusta"
+            line = "pusta"
             while line:
-                line = str(f.readline())
-
+                gc.collect()
+                line = str(f.readline()).strip()
                 if line.startswith("<entry "):
                     text += line
-                elif text != "" and line !="</entry>":
+                elif text != "" and line != "</entry>":
                     text += line
-                    # print(text)
-                elif line == "</entry>":
-                    # print(text)
+                elif line.strip() == "</entry>":
+                    text += line
                     entry = BeautifulSoup(text, 'html.parser')
-                    # print("accesion",entry.find("accession"))
                     if entry.find("accession").text in list(uniprot_ids):
                         self.parse_XML(entry)
 
@@ -48,9 +49,7 @@ class ParseXML:
                         self.lenths[self.name] = self.lenght
                     text = ""
 
-
     def identify_input(self, data):
-        # print(data[:-4])
         if isinstance(data, BeautifulSoup) or isinstance(data, bs4.element.Tag):
             soup = data
         elif self.typ:
@@ -59,7 +58,6 @@ class ParseXML:
             soup = BeautifulSoup(data, 'html.parser')
         elif isinstance(data, io.TextIOWrapper):
             soup = BeautifulSoup(data.read(), 'html.parser')
-
         else:
             raise Exception("Wrong format in XML parser.")
         return soup

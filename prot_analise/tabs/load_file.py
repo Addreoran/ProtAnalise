@@ -1,9 +1,6 @@
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QHBoxLayout, QLabel, QWidget, QFileDialog, QTextEdit, QVBoxLayout, QGroupBox
 
-global licznik_go
-licznik_go = 1
-
 
 class LoadFile(QWidget):
     def __init__(self, fasta):
@@ -19,7 +16,6 @@ class LoadFile(QWidget):
         self.nameEdit.setText("../examples/clustry_H.csv")
 
         selctGroup = QGroupBox("")
-        self.selctGroup2 = QGroupBox("")
         mainLayout = QVBoxLayout()
 
         layout = QHBoxLayout()
@@ -32,11 +28,10 @@ class LoadFile(QWidget):
         layout.addWidget(button2)
         layout.addWidget(button1)
 
-        layout2 = QHBoxLayout()
         button3 = QtWidgets.QPushButton("Download data from UniprotKB")
         button3.clicked.connect(self.get_group_taxonomy)
 
-        self.checkGroup3 = QGroupBox("Get information about proteins from file:")
+        self.checkGroup3 = QGroupBox("Get information about proteins from file (not tested jet):")
 
         layout3 = QHBoxLayout()
         name = QLabel("XML file source of protein: ")
@@ -54,15 +49,15 @@ class LoadFile(QWidget):
         self.checkGroup3.setLayout(layout3)
         self.checkGroup3.hide()
 
+        self.selctGroup2 = QGroupBox("")
+        layout2 = QHBoxLayout()
         layout2.addWidget(button3)
-
         self.ended = QLabel("No lengths and taxonomic.")
-
         layout2.addWidget(self.ended)
-
-        selctGroup.setLayout(layout)
         self.selctGroup2.setLayout(layout2)
         self.selctGroup2.hide()
+
+        selctGroup.setLayout(layout)
 
         mainLayout.addWidget(selctGroup)
         mainLayout.addWidget(self.checkGroup3)
@@ -109,7 +104,6 @@ class LoadFile(QWidget):
     def source_data_UniprotKB(self):
         self.path_database = self.nameEdit2.toPlainText()
         if self.path_database:
-            # print("wywołane")
             self.fasta.get_data_database(self.path_database)
             self.ended.setText("Found lengths and taxonomies. No information about missing.")
 

@@ -1,4 +1,5 @@
 .idea/
 venv/
 prot_analise/*/__pycache__/
+prot_analise/__pycache__/
 examples/

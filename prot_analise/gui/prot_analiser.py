@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QDialog, QTabWidget, QVBoxLayout
 from prot_analise.scripts.menage_data import AllData
 from prot_analise.tabs.load_fasta import LoadFasta
 from prot_analise.tabs.load_file import LoadFile
+from prot_analise.tabs.analise_placement import AnalisePlacement
 
 
 class Window(QDialog):
@@ -26,6 +27,7 @@ class Window(QDialog):
         load = LoadFile(self.all_datas)
         tabWidget.addTab(load, "Load File")
         tabWidget.addTab(LoadFasta(self.all_datas), "Data")
+        tabWidget.addTab(AnalisePlacement(self.all_datas), "Analise region")
         vbox = QVBoxLayout()
         vbox.addWidget(tabWidget)
         self.setLayout(vbox)

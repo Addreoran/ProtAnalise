@@ -15,6 +15,7 @@ class AllData:
         self.kingdom = {}
         self.logs = {}
         self.loaded_protein = ""
+        self.popularity = []
 
     def get_region_by_seq(self, list_prot, seq, begin, end):
         for sequence in list_prot:
@@ -56,7 +57,6 @@ class AllData:
                 if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
                     self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
         self.loaded_protein = ""
-
 
     def get_data_database(self, path):
         parser = ParseXML(path, True)
@@ -108,6 +108,39 @@ class AllData:
             return True
         else:
             return False
+
+    def search_popularity(self):
+        self.popularity = []
+        names = []
+        for i in range(0, 101):
+            self.popularity.append([])
+        for i in range(0, 101):
+            names.append(i)
+        for i in self.proteins.items():
+            for region in i[1]:
+                begin = int(100 * round(int(region.get_begin()) / self.lenths[i[0]], 2))
+                end = int(100 * round(int(region.get_end()) / self.lenths[i[0]], 2))
+                for adding in range(begin, end + 1):
+                    self.popularity[adding].append(region)
+
+    def get_text(self, category, set):
+        text = ""
+        if set != "all" and set != "":
+            if category == "UniprotId":
+                data_set = {set: set}
+            elif category == "Species":
+                data_set = self.species[set]
+            elif category == "Groups of Taxonomy (Cellular)":
+                data_set = self.kingdom[set]
+        else:
+            data_set = self.proteins.keys()
+        for id in data_set:
+            for region in self.proteins[id]:
+                text += ">protein = " + self.loaded_protein + " "
+                text += "begin = " + str(region.get_begin()) + " "
+                text += "end = " + str(region.get_end()) + " \n"
+                text += str(region.sequence) + "\n"
+        return text
 
 
 def parse_uniprot(protein):
