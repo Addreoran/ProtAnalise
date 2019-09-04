@@ -1,4 +1,5 @@
 import io
+import os
 
 import bs4
 from bs4 import BeautifulSoup
@@ -20,34 +21,57 @@ class ParseXML:
 
     def parse_onefile_XMLs(self, uniprot_ids):
         text = ""
+        # todo: it desn't works properly
         print(uniprot_ids)
         import gc
         gc.set_debug(gc.DEBUG_SAVEALL)
-        with open(self.soup) as f:
-            line = "pusta"
-            while line:
-                gc.collect()
-                line = str(f.readline()).strip()
-                if line.startswith("<entry "):
-                    text += line
-                elif text != "" and line != "</entry>":
-                    text += line
-                elif line.strip() == "</entry>":
-                    text += line
-                    entry = BeautifulSoup(text, 'html.parser')
-                    if entry.find("accession").text in list(uniprot_ids):
-                        self.parse_XML(entry)
+        if int(os.stat(self.soup).st_size) < 10000000.0:
+            print("mały", self.soup)
+            entries = BeautifulSoup(open(self.soup), 'html.parser').find_all("entry")
+            for entry in entries:
+                print(self.kingdoms)
+                if entry.find("accession").text in list(uniprot_ids):
+                    lenght, kingdom, name, species = self.parse_XML(entry)
 
-                        if self.kingdom not in self.kingdoms.keys():
-                            self.kingdoms[self.kingdom] = [self.name]
-                        else:
-                            self.kingdoms[self.kingdom].append(self.name)
-                        if self.species not in self.specieses.keys():
-                            self.specieses[self.species] = [self.name]
-                        else:
-                            self.specieses[self.species].append(self.name)
-                        self.lenths[self.name] = self.lenght
-                    text = ""
+                    if kingdom not in self.kingdoms.keys():
+                        self.kingdoms[kingdom] = [name]
+                    else:
+                        self.kingdoms[kingdom].append(name)
+                    if species not in self.specieses.keys():
+                        self.specieses[species] = [name]
+                    else:
+                        self.specieses[species].append(name)
+                    self.lenths[name] = lenght
+        else:
+            with open(self.soup) as f:
+                line = "pusta"
+                while line:
+                    gc.collect()
+                    line = str(f.readline()).strip()
+                    if line.startswith("<entry "):
+                        text += line
+                        print(1)
+                    elif text != "" and line != "</entry>":
+                        text += line
+                        # print(2)
+                    elif line.strip() == "</entry>":
+                        text += line
+                        print(3)
+                        print(text)
+                        entry = BeautifulSoup(text, 'html.parser')
+                        if entry.find("accession").text in list(uniprot_ids):
+                            lenght, kingdom, name, species = self.parse_XML(entry)
+
+                            if self.kingdom not in self.kingdoms.keys():
+                                self.kingdoms[kingdom] = [name]
+                            else:
+                                self.kingdoms[kingdom].append(name)
+                            if self.species not in self.specieses.keys():
+                                self.specieses[species] = [name]
+                            else:
+                                self.specieses[species].append(name)
+                            self.lenths[name] = lenght
+                        text = ""
 
     def identify_input(self, data):
         if isinstance(data, BeautifulSoup) or isinstance(data, bs4.element.Tag):
@@ -73,13 +97,13 @@ class ParseXML:
             soup = self.identify_input(text)
         else:
             soup = self.soup
-        self.species = soup.find("organism").find("name", type="scientific").text
+        species = soup.find("organism").find("name", type="scientific").text
         lineage = soup.find_all("taxon")
-        self.name = soup.find("accession").text
+        name = soup.find("accession").text
         if lineage[0].text == "Eukaryota":
-            self.kingdom = lineage[1].text
+            kingdom = lineage[1].text
         else:
-            self.kingdom = lineage[0].text
+            kingdom = lineage[0].text
 
-        self.lenght = int(soup.find("sequence", length=True)['length'])
-        return self.lenght, self.kingdom, self.name, self.species
+        lenght = int(soup.find("sequence", length=True)['length'])
+        return lenght, kingdom, name, species

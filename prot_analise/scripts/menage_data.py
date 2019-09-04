@@ -63,7 +63,7 @@ class AllData:
         parser.parse_onefile_XMLs(self.proteins.keys())
         self.lenths = parser.get_lenths()
         self.kingdom = parser.kingdoms
-        self.species = parser.species
+        self.species = parser.specieses
         self.lenths = parser.lenths
         print("get data", self.species)
 
@@ -135,7 +135,7 @@ class AllData:
             data_set = self.proteins.keys()
         for id in data_set:
             for region in self.proteins[id]:
-                text += ">protein = " + self.loaded_protein + " "
+                text += ">protein = " + region.uniprot_id + " "
                 text += "begin = " + str(region.get_begin()) + " "
                 text += "end = " + str(region.get_end()) + " \n"
                 text += str(region.sequence) + "\n"

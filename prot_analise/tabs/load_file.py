@@ -31,12 +31,13 @@ class LoadFile(QWidget):
         button3 = QtWidgets.QPushButton("Download data from UniprotKB")
         button3.clicked.connect(self.get_group_taxonomy)
 
-        self.checkGroup3 = QGroupBox("Get information about proteins from file (not tested jet):")
+        self.checkGroup3 = QGroupBox("Get information about proteins from file (not implemented jet):")
 
         layout3 = QHBoxLayout()
         name = QLabel("XML file source of protein: ")
         self.nameEdit2 = QTextEdit(self)
         self.nameEdit2.setMaximumHeight(30)
+        self.nameEdit2.setText("../examples/clustry_H.xml")
         button4 = QtWidgets.QPushButton("Get File")
         button4.clicked.connect(self.get_path_database)
         button5 = QtWidgets.QPushButton("Load File")
