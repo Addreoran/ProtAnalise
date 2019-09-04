@@ -53,7 +53,7 @@ class AllData:
 
     def get_region_by_seq(self, list_prot, seq, begin, end):
         for sequence in list_prot:
-            if sequence.get_sequence() == seq and sequence.get_begin() == begin and sequence.get_end() == end:
+            if sequence.get_sequence() == seq and sequence.begin == begin and sequence.end == end:
                 return sequence
 
     def get_data_database(self, path):
@@ -114,8 +114,8 @@ class AllData:
             self.popularity.append([])
         for uniprot_id in self.proteins.items():
             for region in uniprot_id[1]:
-                begin = int(100 * round(int(region.get_begin()) / self.lengths[uniprot_id[0]], 2))
-                end = int(100 * round(int(region.get_end()) / self.lengths[uniprot_id[0]], 2))
+                begin = int(100 * round(int(region.begin) / self.lengths[uniprot_id[0]], 2))
+                end = int(100 * round(int(region.end) / self.lengths[uniprot_id[0]], 2))
                 for adding in range(begin, end + 1):
                     self.popularity[adding].append(region)
 
@@ -135,8 +135,8 @@ class AllData:
         for id in data_set:
             for region in self.proteins[id]:
                 text += ">protein = " + region.uniprot_id + " "
-                text += "begin = " + str(region.get_begin()) + " "
-                text += "end = " + str(region.get_end()) + " \n"
+                text += "begin = " + str(region.begin) + " "
+                text += "end = " + str(region.end) + " \n"
                 text += str(region.sequence) + "\n"
         return text
 

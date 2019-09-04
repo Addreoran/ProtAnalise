@@ -75,7 +75,7 @@ class LoadFasta(QWidget):
 
     def get_region_by_seq(self, list, seq, begin, end):
         for sequence in list:
-            if sequence.get_sequence() == seq and sequence.get_begin() == begin and sequence.get_end() == end:
+            if sequence.get_sequence() == seq and sequence.begin == begin and sequence.end == end:
                 return sequence
 
     def update_protein(self):

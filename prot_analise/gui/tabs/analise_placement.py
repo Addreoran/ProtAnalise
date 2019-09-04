@@ -101,23 +101,23 @@ class AnalisePlacement(QWidget):
         self.fasta.search_popularity()
         self.popularity = self.fasta.popularity
         try:
-            min = int(self.sliderEdit.toPlainText())
+            min_region = int(self.sliderEdit.toPlainText())
         except Exception:
-            min = 0
+            min_region = 0
         try:
-            max = int(self.slider2Edit.toPlainText())
+            max_region = int(self.slider2Edit.toPlainText())
         except Exception:
-            max = 100
-        if min > max:
-            tmp_min = min
-            min = max
-            max = tmp_min
+            max_region = 100
+        if min_region > max_region:
+            tmp_min = max_region
+            min_region = max_region
+            max_region = tmp_min
         text = ""
-        for i in self.popularity[min:max]:
+        for i in self.popularity[min_region:max_region]:
             for region in i:
                 text += ">protein= " + region.uniprot_id + " "
-                text += "begin= " + region.get_begin() + " "
-                text += "end= " + region.get_end() + " \n"
+                text += "begin= " + region.begin + " "
+                text += "end= " + region.end + " \n"
                 text += region.get_sequence() + "\n"
         self.regions.setText(text)
         self.selctGroup2.show()
