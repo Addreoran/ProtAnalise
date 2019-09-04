@@ -3,11 +3,10 @@ import sys
 
 from PyQt5.QtWidgets import QApplication, QDialog, QTabWidget, QVBoxLayout
 
-from gui.tabs.load_fasta import LoadFasta
-from gui.tabs.load_file import LoadFile
-from prot_analise.scripts.menage_data import AllData
 from prot_analise.gui.tabs.analise_placement import AnalisePlacement
-
+from prot_analise.gui.tabs.load_fasta import LoadFasta
+from prot_analise.gui.tabs.load_file import LoadFile
+from prot_analise.scripts.menage_data import AllData
 
 
 class Window(QDialog):

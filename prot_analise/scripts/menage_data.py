@@ -1,5 +1,6 @@
-import requests
 from multiprocessing.pool import Pool
+
+import requests
 
 from prot_analise.scripts.parse_XML import ParseXML
 from prot_analise.scripts.region import Region

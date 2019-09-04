@@ -25,7 +25,7 @@ class ParseXML:
         import gc
         gc.set_debug(gc.DEBUG_SAVEALL)
         if int(os.stat(self.soup).st_size) < 10000000.0:
-            file=open(self.soup)
+            file = open(self.soup)
             entries = BeautifulSoup(file.read(), 'html.parser').find_all("entry")
             file.close()
             for entry in entries:
