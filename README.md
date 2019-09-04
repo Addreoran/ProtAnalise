@@ -11,7 +11,7 @@ Input file should have set of regions in fasta file. Headers of regions should l
 
 Other formats of headers are not implemented jet.
 
-###Example
+### Example
 
 To start using ProtAnalise, install all requirements and run.
 

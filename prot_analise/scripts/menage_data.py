@@ -114,7 +114,6 @@ class AllData:
         names = []
         for i in range(0, 101):
             self.popularity.append([])
-        for i in range(0, 101):
             names.append(i)
         for i in self.proteins.items():
             for region in i[1]:
