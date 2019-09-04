@@ -6,7 +6,7 @@ def test_xml_parser():
     parser.parse_onefile_XMLs(["Q6GZX4"])
     assert parser.kingdoms == {'Viruses': ['Q6GZX4']}
     assert parser.specieses == {'Frog virus 3 (isolate Goorha)': ['Q6GZX4']}
-    assert parser.lenths == {'Q6GZX4': 256}
+    assert parser.lengths == {'Q6GZX4': 256}
 
 
 if __name__ == "__main__":

@@ -85,7 +85,7 @@ class LoadFile(QWidget):
         self.species = self.fasta.species
         self.cells = self.fasta.cells
         self.path = self.fasta.path
-        self.lenths = self.fasta.lenths
+        self.lengths = self.fasta.lengths
         self.kingdom = self.fasta.kingdom
 
     def load_datas(self):
@@ -113,5 +113,5 @@ class LoadFile(QWidget):
         if len(missing) == 0:
             self.ended.setText("Found lengths and taxonomies.")
         else:
-            self.ended.setText("Found lenths and taxonomies, missed " + str(len(missing)) + " proteins.")
+            self.ended.setText("Found lengths and taxonomies, missed " + str(len(missing)) + " proteins.")
             print(missing)

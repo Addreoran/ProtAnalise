@@ -11,7 +11,7 @@ class AllData:
         self.species = {}
         self.cells = {}
         self.path = ""
-        self.lenths = {}
+        self.lengths = {}
         self.kingdom = {}
         self.logs = {}
         self.loaded_protein = ""
@@ -61,10 +61,10 @@ class AllData:
     def get_data_database(self, path):
         parser = ParseXML(path, True)
         parser.parse_onefile_XMLs(self.proteins.keys())
-        self.lenths = parser.get_lenths()
+        self.lengths = parser.get_lengths()
         self.kingdom = parser.kingdoms
         self.species = parser.specieses
-        self.lenths = parser.lenths
+        self.lengths = parser.lengths
         print("get data", self.species)
 
     def get_group_taxonomy(self):
@@ -87,7 +87,7 @@ class AllData:
                 if not self.set_prot_info(result):
                     missing.append(i)
         self.logs['uniprot_error'] = missing
-        print(self.lenths)
+        print(self.lengths)
         return missing
 
     def set_prot_info(self, res):
@@ -104,7 +104,7 @@ class AllData:
                 self.species[species] = [protein]
             else:
                 self.species[species].append(protein)
-            self.lenths[protein] = length
+            self.lengths[protein] = length
             return True
         else:
             return False
@@ -117,8 +117,8 @@ class AllData:
             names.append(i)
         for i in self.proteins.items():
             for region in i[1]:
-                begin = int(100 * round(int(region.get_begin()) / self.lenths[i[0]], 2))
-                end = int(100 * round(int(region.get_end()) / self.lenths[i[0]], 2))
+                begin = int(100 * round(int(region.get_begin()) / self.lengths[i[0]], 2))
+                end = int(100 * round(int(region.get_end()) / self.lengths[i[0]], 2))
                 for adding in range(begin, end + 1):
                     self.popularity[adding].append(region)
 
@@ -149,7 +149,7 @@ def parse_uniprot(protein):
         dane_all = r.text  # .decode('utf-8')
         print(protein, " ", link)
         data = ParseXML(dane_all)
-        lenth, taxonomy, protein_xml, species = data.parse_XML()
-        return lenth, taxonomy, protein_xml, species, protein
-    except:
+        length, taxonomy, protein_xml, species = data.parse_XML()
+        return length, taxonomy, protein_xml, species, protein
+    except Exception:
         return [], [], [], [], protein

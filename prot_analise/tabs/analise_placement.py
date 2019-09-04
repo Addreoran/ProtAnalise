@@ -11,7 +11,7 @@ class AnalisePlacement(QWidget):
         super().__init__()
         self.path = ""
         self.fasta = fasta
-        self.lenths = {}
+        self.lengths = {}
         self.popularity = []
         self.main_widget = QtWidgets.QWidget(self)
         self.proteins = self.fasta.proteins
@@ -100,11 +100,11 @@ class AnalisePlacement(QWidget):
         self.popularity = self.fasta.popularity
         try:
             min = int(self.sliderEdit.toPlainText())
-        except:
+        except Exception:
             min = 0
         try:
             max = int(self.slider2Edit.toPlainText())
-        except:
+        except Exception:
             max = 100
         if min > max:
             tmp_min = min
@@ -125,7 +125,7 @@ class AnalisePlacement(QWidget):
         self.species = self.fasta.species
         self.cells = self.fasta.cells
         self.path = self.fasta.path
-        self.lenths = self.fasta.lenths
+        self.lengths = self.fasta.lengths
         self.kingdom = self.fasta.kingdom
 
 

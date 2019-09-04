@@ -5,7 +5,7 @@ The project ProtAnalise aims to facilitate the analysis of protein fragments. A 
 ## Getting Started
 
 Input file should have set of regions in fasta file. Headers of regions should look like:
-```angular2html
+```txt
 >s;id=[...];uniprot_id=[...];beg=[...];end=[...];[...]
 ```
 
@@ -15,7 +15,7 @@ Other formats of headers are not implemented jet.
 
 To start using ProtAnalise, install all requirements and run.
 
-```angular2html
+```bash
 python3 ./prot_analise/gui/ProtAnalise.py
 ```
 

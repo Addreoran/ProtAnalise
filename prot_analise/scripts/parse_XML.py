@@ -16,7 +16,7 @@ class ParseXML:
         self.name = str()
         self.species = str()
         self.kingdoms = {}
-        self.lenths = {}
+        self.lengths = {}
         self.specieses = {}
 
     def parse_onefile_XMLs(self, uniprot_ids):
@@ -41,7 +41,7 @@ class ParseXML:
                         self.specieses[species] = [name]
                     else:
                         self.specieses[species].append(name)
-                    self.lenths[name] = lenght
+                    self.lengths[name] = lenght
         else:
             with open(self.soup) as f:
                 line = "pusta"
@@ -70,7 +70,7 @@ class ParseXML:
                                 self.specieses[species] = [name]
                             else:
                                 self.specieses[species].append(name)
-                            self.lenths[name] = lenght
+                            self.lengths[name] = lenght
                         text = ""
 
     def identify_input(self, data):
@@ -89,8 +89,8 @@ class ParseXML:
     def get_kingdoms(self):
         return self.kingdoms
 
-    def get_lenths(self):
-        return self.lenths
+    def get_lengths(self):
+        return self.lengths
 
     def parse_XML(self, text=None):
         if text:

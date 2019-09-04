@@ -11,7 +11,7 @@ class LoadFasta(QWidget):
         self.go_grooup = ""
         self.path = ""
         self.proteins = {}
-        self.lenths = {}
+        self.lengths = {}
         self.species = {}
         name = QLabel("File: ")
         self.file = QTextEdit(self)
@@ -39,8 +39,8 @@ class LoadFasta(QWidget):
         self.go_by_anch = {}
         self.setLayout(layout)
 
-    def set_lenths(self, lenths):
-        self.lenths = lenths
+    def set_lengths(self, lengths):
+        self.lengths = lengths
         self.update()
 
     def source_datas(self):
@@ -109,9 +109,9 @@ class LoadFasta(QWidget):
         if self.combo_group.currentText() == "UniprotId":
             all_proteins = []
             for region in self.proteins.items():
-                if region[0] in self.lenths.keys():
+                if region[0] in self.lengths.keys():
                     all_proteins.append(
-                        region[0] + ", regions:" + str(len(region[1])) + ", lenght " + str(self.lenths[region[0]]))
+                        region[0] + ", regions:" + str(len(region[1])) + ", lenght " + str(self.lengths[region[0]]))
                 else:
                     all_proteins.append(
                         region[0] + ", regions:" + str(len(region[1])) + ", lenght None")
@@ -138,7 +138,7 @@ class LoadFasta(QWidget):
         self.fasta.species = self.species
         self.fasta.cells = self.cells
         self.fasta.path = self.path
-        self.fasta.lenths = self.lenths
+        self.fasta.lengths = self.lengths
         self.fasta.kingdom = self.kingdom
 
     def update_tab(self):
@@ -146,5 +146,5 @@ class LoadFasta(QWidget):
         self.species = self.fasta.species
         self.cells = self.fasta.cells
         self.path = self.fasta.path
-        self.lenths = self.fasta.lenths
+        self.lengths = self.fasta.lengths
         self.kingdom = self.fasta.kingdom
