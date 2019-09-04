@@ -16,7 +16,7 @@ Other formats of headers are not implemented jet.
 To start using ProtAnalise, install all requirements and run.
 
 ```bash
-python3 ./prot_analise/gui/ProtAnalise.py
+python3 ./prot_analise/gui/prot_analise.py
 ```
 
 In tab Load File you can load data from example file ./prot_analise_examples/clustry_H.csv. To download more data about proteins from which comes fragments click "Download data from UniprotKB". 
