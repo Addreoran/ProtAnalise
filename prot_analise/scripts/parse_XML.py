@@ -22,14 +22,13 @@ class ParseXML:
     def parse_onefile_XMLs(self, uniprot_ids):
         text = ""
         # todo: it desn't works properly
-        print(uniprot_ids)
         import gc
         gc.set_debug(gc.DEBUG_SAVEALL)
         if int(os.stat(self.soup).st_size) < 10000000.0:
-            print("mały", self.soup)
-            entries = BeautifulSoup(open(self.soup), 'html.parser').find_all("entry")
+            file=open(self.soup)
+            entries = BeautifulSoup(file.read(), 'html.parser').find_all("entry")
+            file.close()
             for entry in entries:
-                print(self.kingdoms)
                 if entry.find("accession").text in list(uniprot_ids):
                     lenght, kingdom, name, species = self.parse_XML(entry)
 
@@ -50,14 +49,10 @@ class ParseXML:
                     line = str(f.readline()).strip()
                     if line.startswith("<entry "):
                         text += line
-                        print(1)
                     elif text != "" and line != "</entry>":
                         text += line
-                        # print(2)
                     elif line.strip() == "</entry>":
                         text += line
-                        print(3)
-                        print(text)
                         entry = BeautifulSoup(text, 'html.parser')
                         if entry.find("accession").text in list(uniprot_ids):
                             lenght, kingdom, name, species = self.parse_XML(entry)
