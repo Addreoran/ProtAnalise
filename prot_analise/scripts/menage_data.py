@@ -53,7 +53,7 @@ class AllData:
 
     def get_region_by_seq(self, list_prot, seq, begin, end):
         for sequence in list_prot:
-            if sequence.get_sequence() == seq and sequence.begin == begin and sequence.end == end:
+            if sequence.sequence == seq and sequence.begin == begin and sequence.end == end:
                 return sequence
 
     def get_data_database(self, path):

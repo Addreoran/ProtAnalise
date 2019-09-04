@@ -118,7 +118,7 @@ class AnalisePlacement(QWidget):
                 text += ">protein= " + region.uniprot_id + " "
                 text += "begin= " + region.begin + " "
                 text += "end= " + region.end + " \n"
-                text += region.get_sequence() + "\n"
+                text += region.sequence + "\n"
         self.regions.setText(text)
         self.selctGroup2.show()
 
