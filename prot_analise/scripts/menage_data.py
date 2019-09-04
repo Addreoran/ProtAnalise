@@ -22,33 +22,33 @@ class AllData:
         self.clear()
         self.path = path
         f = open(path, 'r')
-        uniprotid = None
+        uniprot_id = None
         seq_reg = ""
         begin = 0
         end = 0
 
-        for i in f.readlines():
-            if i != "":
-                if i.startswith(">s"):
-                    if uniprotid:
-                        if uniprotid not in self.proteins.keys():
-                            self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
+        for line in f.readlines():
+            if line != "":
+                if line.startswith(">s"):
+                    if uniprot_id:
+                        if uniprot_id not in self.proteins.keys():
+                            self.proteins[uniprot_id] = [Region(uniprot_id, seq_reg, begin, end)]
                         else:
-                            if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
-                                self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
-                    uniprotid = i.split(";")[2].split("=")[1]
+                            if not self.get_region_by_seq(self.proteins[uniprot_id], seq_reg, begin, end):
+                                self.proteins[uniprot_id].append(Region(uniprot_id, seq_reg, begin, end))
+                    uniprot_id = line.split(";")[2].split("=")[1]
+                    begin = line.split(";")[3].split("=")[1]
+                    end = line.split(";")[4].split("=")[1]
+                    print(uniprot_id, seq_reg, begin, end, sep=", ")
                     seq_reg = ""
-                    begin = i.split(";")[3].split("=")[1]
-                    end = i.split(";")[4].split("=")[1]
-                    print(uniprotid, seq_reg, begin, end, sep=", ")
-                elif uniprotid and not i.startswith(">"):
-                    seq_reg += i.strip()
-        if uniprotid:
-            if uniprotid not in self.proteins.keys():
-                self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
+                elif uniprot_id and not line.startswith(">"):
+                    seq_reg += line.strip()
+        if uniprot_id:
+            if uniprot_id not in self.proteins.keys():
+                self.proteins[uniprot_id] = [Region(uniprot_id, seq_reg, begin, end)]
             else:
-                if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
-                    self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
+                if not self.get_region_by_seq(self.proteins[uniprot_id], seq_reg, begin, end):
+                    self.proteins[uniprot_id].append(Region(uniprot_id, seq_reg, begin, end))
         self.loaded_protein = ""
 
     def get_region_by_seq(self, list_prot, seq, begin, end):
@@ -110,14 +110,12 @@ class AllData:
 
     def search_popularity(self):
         self.popularity = []
-        names = []
-        for i in range(0, 101):
+        for i in range(101):
             self.popularity.append([])
-            names.append(i)
-        for i in self.proteins.items():
-            for region in i[1]:
-                begin = int(100 * round(int(region.get_begin()) / self.lengths[i[0]], 2))
-                end = int(100 * round(int(region.get_end()) / self.lengths[i[0]], 2))
+        for uniprot_id in self.proteins.items():
+            for region in uniprot_id[1]:
+                begin = int(100 * round(int(region.get_begin()) / self.lengths[uniprot_id[0]], 2))
+                end = int(100 * round(int(region.get_end()) / self.lengths[uniprot_id[0]], 2))
                 for adding in range(begin, end + 1):
                     self.popularity[adding].append(region)
 
