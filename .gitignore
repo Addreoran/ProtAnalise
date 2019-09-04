@@ -2,4 +2,5 @@
 venv/
 prot_analise/*/__pycache__/
 prot_analise/__pycache__/
+prot_analise/tabs/__pycache__/
 examples/
