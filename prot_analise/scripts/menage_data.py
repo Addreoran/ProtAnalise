@@ -19,7 +19,7 @@ class AllData:
         self.popularity = []
 
     def get_path(self, path):
-        self.proteins = {}
+        self.clear()
         self.path = path
         uniprotid, seq_reg, begin, end = self.read_file(path)
         if seq_reg:
@@ -145,6 +145,17 @@ class AllData:
                 text += "end = " + str(region.get_end()) + " \n"
                 text += str(region.sequence) + "\n"
         return text
+
+    def clear(self):
+        self.proteins = {}
+        self.species = {}
+        self.cells = {}
+        self.path = ""
+        self.lengths = {}
+        self.kingdom = {}
+        self.logs = {}
+        self.loaded_protein = ""
+        self.popularity = []
 
 
 def parse_uniprot(protein):
