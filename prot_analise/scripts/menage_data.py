@@ -1,4 +1,4 @@
-from multiprocessing.pool import Pool
+import multiprocessing
 
 import requests
 
@@ -18,40 +18,11 @@ class AllData:
         self.loaded_protein = ""
         self.popularity = []
 
-    def get_region_by_seq(self, list_prot, seq, begin, end):
-        for sequence in list_prot:
-            if sequence.get_sequence() == seq and sequence.get_begin() == begin and sequence.get_end() == end:
-                return sequence
-
     def get_path(self, path):
         self.proteins = {}
         self.path = path
-        f = open(path, 'r')
-        uniprotid = None
-        seq_reg = ""
-        begin = 0
-        end = 0
-
-        for i in f.readlines():
-            if i != "":
-                if i.startswith(">s"):
-                    if uniprotid:
-                        if uniprotid not in self.proteins.keys():
-                            self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
-                        else:
-                            if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
-                                self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
-                    uniprotid = i.split(";")[2].split("=")[1]
-                    seq_reg = ""
-                    begin = i.split(";")[3].split("=")[1]
-                    end = i.split(";")[4].split("=")[1]
-                    print("uniprotId ", uniprotid)
-                    print("seq ", seq_reg)
-                    print("begin ", begin)
-                    print("end ", end)
-                elif uniprotid and not i.startswith(">"):
-                    seq_reg += i.strip()
-        if uniprotid:
+        uniprotid, seq_reg, begin, end = self.read_file(path)
+        if seq_reg:
             if uniprotid not in self.proteins.keys():
                 self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
             else:
@@ -59,7 +30,38 @@ class AllData:
                     self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
         self.loaded_protein = ""
 
+    def read_file(self, path):
+        f = open(path, 'r')
+        uniprotid = None
+        seq_reg = ""
+        begin = 0
+        end = 0
+
+        for line in f.readlines():
+            if line != "":
+                if line.startswith(">s"):
+                    if uniprotid:
+                        if uniprotid not in self.proteins.keys():
+                            self.proteins[uniprotid] = [Region(uniprotid, seq_reg, begin, end)]
+                        else:
+                            if not self.get_region_by_seq(self.proteins[uniprotid], seq_reg, begin, end):
+                                self.proteins[uniprotid].append(Region(uniprotid, seq_reg, begin, end))
+                    uniprotid = line.split(";")[2].split("=")[1]
+                    seq_reg = ""
+                    begin = line.split(";")[3].split("=")[1]
+                    end = line.split(";")[4].split("=")[1]
+                    print(uniprotid, seq_reg, begin, end, sep=", ")
+                elif uniprotid and not line.startswith(">"):
+                    seq_reg += line.strip()
+        return uniprotid, seq_reg, begin, end
+
+    def get_region_by_seq(self, list_prot, seq, begin, end):
+        for sequence in list_prot:
+            if sequence.get_sequence() == seq and sequence.get_begin() == begin and sequence.get_end() == end:
+                return sequence
+
     def get_data_database(self, path):
+        # todo: improve implementation
         parser = ParseXML(path, True)
         parser.parse_onefile_XMLs(self.proteins.keys())
         self.lengths = parser.get_lengths()
@@ -70,8 +72,8 @@ class AllData:
 
     def get_group_taxonomy(self):
         missing = []
-        p = Pool(8)
-        res = p.map(parse_uniprot, list(self.proteins.keys()))
+        pool = multiprocessing.Pool(multiprocessing.cpu_count())
+        res = pool.map(parse_uniprot, list(self.proteins.keys()))
         for date in res:
             if not self.set_prot_info(date):
                 missing.append(date[4])
