@@ -12,7 +12,7 @@ class ParseXML:
         self.soup = self.identify_input(data)
 
         self.kingdom = str()
-        self.lenght = int()
+        self.length = int()
         self.name = str()
         self.species = str()
         self.kingdoms = {}
@@ -30,7 +30,7 @@ class ParseXML:
             file.close()
             for entry in entries:
                 if entry.find("accession").text in list(uniprot_ids):
-                    lenght, kingdom, name, species = self.parse_XML(entry)
+                    length, kingdom, name, species = self.parse_XML(entry)
 
                     if kingdom not in self.kingdoms.keys():
                         self.kingdoms[kingdom] = [name]
@@ -40,7 +40,7 @@ class ParseXML:
                         self.specieses[species] = [name]
                     else:
                         self.specieses[species].append(name)
-                    self.lengths[name] = lenght
+                    self.lengths[name] = length
         else:
             with open(self.soup) as f:
                 line = "pusta"
@@ -55,7 +55,7 @@ class ParseXML:
                         text += line
                         entry = BeautifulSoup(text, 'html.parser')
                         if entry.find("accession").text in list(uniprot_ids):
-                            lenght, kingdom, name, species = self.parse_XML(entry)
+                            length, kingdom, name, species = self.parse_XML(entry)
 
                             if self.kingdom not in self.kingdoms.keys():
                                 self.kingdoms[kingdom] = [name]
@@ -65,7 +65,7 @@ class ParseXML:
                                 self.specieses[species] = [name]
                             else:
                                 self.specieses[species].append(name)
-                            self.lengths[name] = lenght
+                            self.lengths[name] = length
                         text = ""
 
     def identify_input(self, data):
@@ -100,5 +100,5 @@ class ParseXML:
         else:
             kingdom = lineage[0].text
 
-        lenght = int(soup.find("sequence", length=True)['length'])
-        return lenght, kingdom, name, species
+        length = int(soup.find("sequence", length=True)['length'])
+        return length, kingdom, name, species

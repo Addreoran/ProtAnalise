@@ -132,6 +132,8 @@ class AllData:
                 data_set = self.species[set]
             elif category == "Groups of Taxonomy (Cellular)":
                 data_set = self.kingdom[set]
+            else:
+                data_set = self.proteins.keys()
         else:
             data_set = self.proteins.keys()
         for id in data_set:

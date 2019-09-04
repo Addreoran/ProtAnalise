@@ -111,10 +111,10 @@ class LoadFasta(QWidget):
             for region in self.proteins.items():
                 if region[0] in self.lengths.keys():
                     all_proteins.append(
-                        region[0] + ", regions:" + str(len(region[1])) + ", lenght " + str(self.lengths[region[0]]))
+                        region[0] + ", regions:" + str(len(region[1])) + ", length " + str(self.lengths[region[0]]))
                 else:
                     all_proteins.append(
-                        region[0] + ", regions:" + str(len(region[1])) + ", lenght None")
+                        region[0] + ", regions:" + str(len(region[1])) + ", length None")
             self.loaded_protein = ""
         elif self.combo_group.currentText() == "Species":
             for region in self.species.items():

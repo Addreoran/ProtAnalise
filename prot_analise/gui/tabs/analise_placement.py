@@ -22,7 +22,7 @@ class AnalisePlacement(QWidget):
 
         self.layout2 = QVBoxLayout()
 
-        checkGroup2 = QGroupBox("Get lenght of proteins from file.")
+        checkGroup2 = QGroupBox("Get length of proteins from file.")
         layout3 = QHBoxLayout()
 
         self.slider = QSlider(Qt.Horizontal, self)
@@ -48,7 +48,7 @@ class AnalisePlacement(QWidget):
         self.slider2Edit = QTextEdit(self)
         self.slider2Edit.setMaximumHeight(30)
         self.slider2Edit.setMaximumWidth(60)
-        self.sliderEdit.setText('100')
+        self.slider2Edit.setText('100')
         layout3.addWidget(self.slider)
         layout3.addWidget(self.sliderEdit)
         layout3.addWidget(self.slider2)
