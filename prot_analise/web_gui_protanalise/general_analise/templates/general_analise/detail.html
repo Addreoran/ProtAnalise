@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Protein analiser</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'general_analise/style.css' %}">
+<h1>Protein Analiser</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<div class="main-menu">
+    <div class="horizontal-menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/loads/">Loads</a></li>
+            <li><a class="active" href="/analise">Analise</a></li>
+            <li><a href="/news">News</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </div>
+</div>
+<br>
+<div class="main-menu">
+    <h5>Load number: {{ load.pk }}, Time of load: {{ load.load_time }}</h5>
+    {% with first_cluster=object.clusters.all|first %}
+        {% with first_region=first_cluster.regions.all|first %}
+            {% with first_protein=first_region.protein %}
+                <div class="horizontal-menu-analyse">
+                    <ul>
+                        {% if group == 'species' %}
+                            <li><a class="active" href="#">Species</a></li>
+                        {% else %}
+                            <li><a href="/{{ pk }}/species/{{ first_protein.organism }}/{{ cluster_pk }}">Species</a>
+                            </li>
+                        {% endif %}
+                        {% if group == 'kingdom' %}
+                            <li><a class="active" href="#">Kingdom</a></li>
+                        {% else %}
+                            <li>
+                                <a href="/{{ pk }}/kingdom/{{ first_protein.organism.group.name }}/{{ cluster_pk }}">Kingdom</a>
+                            </li>
+                        {% endif %}
+                        {% if group == 'proteins' %}
+                            <li><a class="active" href="#">Proteins</a></li>
+                        {% else %}
+                            <li><a href="/{{ pk }}/proteins/{{ first_region.protein }}/{{ cluster_pk }}">Proteins</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endwith %}
+        {% endwith %}
+    {% endwith %}
+    <br>
+    <div class="row">
+        <div class="col-4">
+            <div class="vertical-menu">
+                {% for cluster, prot_data in stat.items %}
+                    <a href="#" class="active">{{ cluster }}</a>
+                    {% for key, value in prot_data.items %}
+                        {% if group == 'kingdom' %}
+                            {% if pk == load.pk and key == king and cluster_pk == cluster.pk %}
+                                <a href="#" class="active_card">{{ key }}:
+                                    protein:{{ value.protein }},
+                                    region:{{ value.region }}</a>
+                            {% else %}
+                                <a href="/{{ load.pk }}/kingdom/{{ key }}/{{ cluster.pk }}">{{ key }}:
+                                    protein:{{ value.protein }},
+                                    region:{{ value.region }}</a>
+                            {% endif %}
+                        {% elif   group == 'species' %}
+                            {% if pk == load.pk and key == king and cluster_pk == cluster.pk %}
+                                <a href="#" class="active_card">{{ key }}:
+                                    protein:{{ value.protein }},
+                                    region:{{ value.region }}</a>
+                            {% else %}
+                                <a href="/{{ load.pk }}/species/{{ key }}/{{ cluster.pk }}">{{ key }}:
+                                    protein:{{ value.protein }},
+                                    region:{{ value.region }}</a>
+                            {% endif %}
+                        {% elif   group == 'proteins' %}
+                            {% if pk == load.pk and key == king and cluster_pk == cluster.pk %}
+                                <a href="#" class="active_card">{{ key }}:
+
+                                    region:{{ value.region }}</a>
+                            {% else %}
+                                <a href="/{{ load.pk }}/proteins/{{ key }}/{{ cluster.pk }}">{{ key }}:
+
+                                    region:{{ value.region }}</a>
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-8">
+            {% for cluster in object.clusters.all %}
+                {% if cluster.pk == cluster_pk %}
+                    <h3>Cluster: {{ cluster }}</h3>
+                    {% for region in cluster.regions.all %}
+                        {% if group == 'kingdom' %}
+                            {#        {{ region.protein.organism.group }} {{ king }}#}
+                            {% if region.protein.organism.group.name == king %}
+                                <h5>
+                                    > {{ region.protein }} {{ region.protein.organism }} {{ region.protein.organism.group }}</h5>
+                                {% with space=region.begin|stringformat:"i"|add:":" %}
+                                    {% with spac=region.end|stringformat:"i" %}
+                                        {% with s=space|add:spac %}
+                                            <html>
+                                            <h5>{{ region.protein.sequece|slice:s }}</h5>
+                                            </html>
+                                        {% endwith %}
+
+                                    {% endwith %}
+
+                                {% endwith %}
+                            {% endif %}
+                        {% elif group == 'species' %}
+                            {% if region.protein.organism.organism == king %}
+                                <h5>
+                                    > {{ region.protein }} {{ region.protein.organism }} {{ region.protein.organism.group }}</h5>
+                                {% with space=region.begin|stringformat:"i"|add:":" %}
+                                    {% with spac=region.end|stringformat:"i" %}
+                                        {% with s=space|add:spac %}
+                                            <html>
+                                            <h5>{{ region.protein.sequece|slice:s }}</h5>
+                                            </html>
+                                        {% endwith %}
+
+                                    {% endwith %}
+
+                                {% endwith %}
+                            {% endif %}
+                        {% elif group == 'proteins' %}
+                            {% if region.protein.protein_id == king %}
+                                <h5>
+                                    > {{ region.protein }} {{ region.protein.organism }} {{ region.protein.organism.group }}</h5>
+                                {% with space=region.begin|stringformat:"i"|add:":" %}
+                                    {% with spac=region.end|stringformat:"i" %}
+                                        {% with s=space|add:spac %}
+                                            <html>
+                                            <h5>{{ region.protein.sequece|slice:s }}</h5>
+                                            </html>
+                                        {% endwith %}
+                                    {% endwith %}
+                                {% endwith %}
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+</body>
+</html>

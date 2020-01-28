@@ -4,3 +4,7 @@ prot_analise/*/__pycache__/
 prot_analise/__pycache__/
 prot_analise/gui/tabs/__pycache__/
 examples/
+prot_analise/web_gui_protanalise/db.sqlite3
+prot_analise/web_gui_protanalise/general_analise/migrations/
+prot_analise/web_gui_protanalise/web_gui_protanalise/__pycache__/
+prot_analise/web_gui_protanalise/__pycache__/

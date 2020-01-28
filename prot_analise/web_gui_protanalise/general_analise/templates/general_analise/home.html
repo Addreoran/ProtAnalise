@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Protein analiser</title>
+</head>
+<body>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'general_analise/style.css' %}">
+<h1>Protein Analiser</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+<div class="main-menu">
+    <div class="horizontal-menu">
+        <ul>
+            <li><a class="active" href="#">Home</a></li>
+            <li><a href="/loads">Loads</a></li>
+            <li><a href="/analise">Analise</a></li>
+            <li><a href="/news">News</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/about">About</a></li>
+        </ul>
+    </div>
+</div>
+I don't know what I want to say there jet.
+</body>
+</html>

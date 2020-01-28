@@ -78,6 +78,7 @@ class LoadFile(QWidget):
         filename = QFileDialog.getOpenFileName(self, "Open File", "./")
         if filename[0]:
             self.nameEdit2.setText(filename[0])
+        print(filename)
         self.update()
 
     def update_tab(self):

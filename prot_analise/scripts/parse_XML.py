@@ -18,6 +18,7 @@ class ParseXML:
         self.kingdoms = {}
         self.lengths = {}
         self.specieses = {}
+        self.sequences={}
 
     def parse_onefile_XMLs(self, uniprot_ids):
         text = ""
@@ -30,7 +31,7 @@ class ParseXML:
             file.close()
             for entry in entries:
                 if entry.find("accession").text in list(uniprot_ids):
-                    length, kingdom, name, species = self.parse_XML(entry)
+                    length, kingdom, name, species, sequence = self.parse_XML(entry)
 
                     if kingdom not in self.kingdoms.keys():
                         self.kingdoms[kingdom] = [name]
@@ -40,6 +41,10 @@ class ParseXML:
                         self.specieses[species] = [name]
                     else:
                         self.specieses[species].append(name)
+                    self.lengths[name] = length
+                    if name not in self.specieses.keys():
+                        self.sequences[species] = sequence
+
                     self.lengths[name] = length
         else:
             with open(self.soup) as f:
@@ -55,7 +60,7 @@ class ParseXML:
                         text += line
                         entry = BeautifulSoup(text, 'html.parser')
                         if entry.find("accession").text in list(uniprot_ids):
-                            length, kingdom, name, species = self.parse_XML(entry)
+                            length, kingdom, name, species, sequence = self.parse_XML(entry)
 
                             if self.kingdom not in self.kingdoms.keys():
                                 self.kingdoms[kingdom] = [name]
@@ -65,6 +70,8 @@ class ParseXML:
                                 self.specieses[species] = [name]
                             else:
                                 self.specieses[species].append(name)
+                            if name not in self.specieses.keys():
+                                self.sequences[species] = sequence
                             self.lengths[name] = length
                         text = ""
 
@@ -101,4 +108,6 @@ class ParseXML:
             kingdom = lineage[0].text
 
         length = int(soup.find("sequence", length=True)['length'])
-        return length, kingdom, name, species
+        sequence=soup.find("sequence", length=True).text
+
+        return length, kingdom, name, species, sequence

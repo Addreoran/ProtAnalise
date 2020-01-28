@@ -17,11 +17,17 @@ class AllData:
         self.logs = {}
         self.loaded_protein = ""
         self.popularity = []
+        self.sequences = {}
 
-    def get_path(self, path):
+    def get_path(self, data=None, path=None):
         self.clear()
-        self.path = path
-        file = open(path)
+        if path is not None:
+            self.path = path
+            file = open(path)
+        elif data is not None:
+            file = data.splitlines()
+        else:
+            Exception
         uniprot_id = None
         seq_reg = ""
         begin = 0
@@ -43,7 +49,8 @@ class AllData:
         if uniprot_id:
             region = Region(uniprot_id, seq_reg, begin, end)
             self.add_region(region)
-        file.close()
+        if path is not None:
+            file.close()
         self.loaded_protein = ""
 
     def add_region(self, region):
@@ -75,12 +82,10 @@ class AllData:
             if not self.set_prot_info(date):
                 missing.append(date[4])
         tmp = missing
-        len_miss = len(tmp)
         missing = []
-        while len(missing) != len_miss:
+        while len(missing) != len(tmp):
             # todo: check it
             tmp = missing
-            len_miss = len(tmp)
             missing = []
             for i in tmp:
                 result = parse_uniprot(i)
@@ -96,6 +101,7 @@ class AllData:
             kingdom = res[1]
             species = res[3]
             protein = res[4]
+            sequence = res[5]
             if kingdom not in self.kingdom.keys():
                 self.kingdom[kingdom] = [protein]
             else:
@@ -104,6 +110,7 @@ class AllData:
                 self.species[species] = [protein]
             else:
                 self.species[species].append(protein)
+            self.sequences[protein]=sequence
             self.lengths[protein] = length
             return True
         else:
@@ -152,6 +159,16 @@ class AllData:
         self.loaded_protein = ""
         self.popularity = []
 
+    def get_kingdom_by_prot_id(self, prot):
+        for king, proteins in self.kingdom.items():
+            if prot in proteins:
+                return king
+
+    def get_species_by_prot_id(self, prot):
+        for spec, proteins in self.species.items():
+            if prot in proteins:
+                return spec
+
 
 def parse_uniprot(protein):
     try:
@@ -160,7 +177,7 @@ def parse_uniprot(protein):
         dane_all = r.text  # .decode('utf-8')
         print(protein, " ", link)
         data = ParseXML(dane_all)
-        length, taxonomy, protein_xml, species = data.parse_XML()
-        return length, taxonomy, protein_xml, species, protein
+        length, taxonomy, protein_xml, species, sequence = data.parse_XML()
+        return length, taxonomy, protein_xml, species, protein, sequence
     except Exception:
         return [], [], [], [], protein
