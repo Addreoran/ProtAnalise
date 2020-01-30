@@ -16,7 +16,7 @@ Other formats of headers are not implemented jet.
 To start using ProtAnalise witg PyQt gui, install all requirements and run.
 
 ```bash
-PYTHONPATH=$PYTHONPATH:$(pwd) python3 ./prot_analise/gui/prot_analise.py
+PYTHONPATH=$PYTHONPATH:$(pwd) python3 ./prot_analise/gui/prot_analiser.py
 ```
 or set Python path in ./ProtAnalise/prot_analise.
 
@@ -27,7 +27,7 @@ PYTHONPATH=$PYTHONPATH:$(pwd)
 and run prot_analise.py 
 
 ```bash
-python3 ./prot_analise.py
+python3 ./prot_analiser.py
 ```
 
 To use Django gui, set Python Path:

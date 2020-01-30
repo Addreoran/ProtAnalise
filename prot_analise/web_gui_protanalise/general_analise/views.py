@@ -164,3 +164,7 @@ class DetailCellularView(generic.DetailView):
 
         )
         return queryset
+
+def AuthView():
+    pass
+# https://wsvincent.com/django-user-authentication-tutorial-signup/

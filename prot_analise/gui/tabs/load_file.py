@@ -13,7 +13,7 @@ class LoadFile(QWidget):
         name = QLabel("File Source: ")
         self.nameEdit = QTextEdit(self)
         self.nameEdit.setMaximumHeight(30)
-        self.nameEdit.setText("../examples/clustry_H.fasta")
+        self.nameEdit.setText("./prot_analise/examples/clustry_H.fasta")
 
         selctGroup = QGroupBox("")
         mainLayout = QVBoxLayout()
@@ -37,7 +37,7 @@ class LoadFile(QWidget):
         name = QLabel("XML file source of protein: ")
         self.nameEdit2 = QTextEdit(self)
         self.nameEdit2.setMaximumHeight(30)
-        self.nameEdit2.setText("../examples/clustry_H.xml")
+        self.nameEdit2.setText("./prot_analise/examples/clustry_H.fasta")
         button4 = QtWidgets.QPushButton("Choose File")
         button4.clicked.connect(self.get_path_database)
         button5 = QtWidgets.QPushButton("Load File")
@@ -78,7 +78,6 @@ class LoadFile(QWidget):
         filename = QFileDialog.getOpenFileName(self, "Open File", "./")
         if filename[0]:
             self.nameEdit2.setText(filename[0])
-        print(filename)
         self.update()
 
     def update_tab(self):
@@ -97,7 +96,7 @@ class LoadFile(QWidget):
     def source_datas(self):
         self.path = self.nameEdit.toPlainText()
         if self.path:
-            self.fasta.get_path(self.path)
+            self.fasta.get_path(path=self.path)
             self.update_tab()
             if len(self.proteins.items()) > 0:
                 self.selctGroup2.show()
@@ -115,4 +114,3 @@ class LoadFile(QWidget):
             self.ended.setText("Found lengths and taxonomies.")
         else:
             self.ended.setText("Found lengths and taxonomies, missed " + str(len(missing)) + " proteins.")
-            print(missing)
