@@ -22,10 +22,13 @@
         </ul>
     </div>
 </div>
-<ol>
-    {% for new in news_list %}
-        <li>News: {{ new.event }}, Date of change: {{ new.load_time }}</li>
-    {% endfor %}
-</ol>
+<div  class="container">
+    <h2>News in Protein Analiser:</h2>
+    <ol>
+        {% for new in news_list %}
+            <li>News: {{ new.event }}, Date of change: {{ new.load_time }}</li>
+        {% endfor %}
+    </ol>
+</div>
 </body>
 </html>

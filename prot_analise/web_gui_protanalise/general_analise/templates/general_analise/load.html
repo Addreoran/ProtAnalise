@@ -23,16 +23,19 @@
     </div>
     <br>
 </div>
-<h5>List of all loads in database: </h5>
-<ol>
-    {% for load, data_load in load_list.items %}
-        <li>Load number: {{ load }} <a href={{ data_load.url }}>View load</a>
-            <br>
-            Load time: {{ data_load.time }}
-            <br>
-            Size: {{ data_load.region_size }} regions in {{ data_load.prot_size }}
-        </li>
-    {% endfor %}
-</ol>
+<div class="container">
+
+    <h5>List of all loads in database: </h5>
+    <ol>
+        {% for load, data_load in load_list.items %}
+            <li>Load number: {{ load }} <a href={{ data_load.url }}>View load</a>
+                <br>
+                Load time: {{ data_load.time }}
+                <br>
+                Size: {{ data_load.region_size }} regions in {{ data_load.prot_size }}
+            </li>
+        {% endfor %}
+    </ol>
+</div>
 </body>
 </html>
